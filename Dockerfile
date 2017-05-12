@@ -6,7 +6,7 @@ FROM alpine
 MAINTAINER kev <noreply@datageek.info>
 
 ARG SS_VER=2.4.1
-ARG SS_URL=https://github.com/shadowsocksr/shadowsocksr-libev/archive/$SS_VER.zip
+ARG SS_URL=https://github.com/shadowsocksr/shadowsocksr-libev/archive/$SS_VER.tar.gz
 
 RUN set -ex && \
     apk add --no-cache --virtual .build-deps \
@@ -21,7 +21,7 @@ RUN set -ex && \
                                 tar \
                                 xmlto && \
     cd /tmp && \
-    curl -sSL $SS_URL | tar xz --strip 1 && \
+    curl -sSL $SS_URL | unzip && \
     ./configure --prefix=/usr --disable-documentation && \
     make install && \
     cd .. && \
