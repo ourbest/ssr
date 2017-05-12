@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Build on top of Pure.">
+    <title>Arukas Share Shadowsocks</title>
+    <link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Raleway:200">
+    <link href="//cdn.bootcss.com/pure/0.6.0/pure-min.css" rel="stylesheet"/>
+    <link href="https://jovial-bell-3232.arukascloud.io/css.css" rel="stylesheet"/>
+
+</head>
+<body>
+<div id="main">
+    <div class="header">
+        <h2>Arukas Share Shadowsocks</h2>
+    </div>
+    <div class="content">
+        <p>
+            <small>
+                调用Arukas API KEY获取IP以及端口等信息。&nbsp;
+                <br/>
+                注意以下IP和端口不定期变化！请注意更新。
+            </small>
+        </p>
+        <div class="pure-form pure-form-stacked">
+
+            <fieldset>
+                <legend><b> 账号信息 ↓↓: </b></legend>
+                <div class="pure-g">
+                    <div class="pure-u-1-1">
+
+                        <small><code>{{ config.ss_str }}</code>
+                        </small>
+                    </div>
+                </div>
+                <br>
+                <div class="pure-g">
+                    <div class="pure-u-1-1">
+
+                        <div class="ss_qr"
+                             val='aes-256-cfb:{{ config.ss.password }}@{{ config.ss.server }}:{{ config.ss.server_port }}'
+                             style="width:350px; height:350px;"></div>
+
+                    </div>
+                </div>
+            </fieldset>
+            <br>
+            <br>
+            <br>
+        </div>
+        <div class="pure-form pure-form-stacked">
+            <fieldset>
+                <legend><b> kcptun信息 ↓↓: </b></legend>
+                <div class="pure-g">
+                    <div class="pure-u-1-1">
+
+                        <small><code>{{ config.kcp_str }}</code>
+                        </small>
+                    </div>
+                </div>
+            </fieldset>
+            <br>
+            <br>
+            <br>
+        </div>
+    </div>
+</div>
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script src="//cdn.bootcss.com/Base64/1.0.0/base64.min.js"></script>
+<script>
+    $(function () {
+        $('.ss_qr').each(function (i, obj) {
+            $(obj).empty();
+            $(obj).qrcode({width: 350, height: 350, text: "ss://" + btoa($(obj).attr('val'))});
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,12 +1,13 @@
 #! /bin/bash
 
-IMAGE_NAME="leesah/shadowsocks-libev"
+IMAGE_NAME="ourbest/ssr-kcp"
 PORTNUMBER="8338"
 
-SHADOWSOCKS="/usr/local/bin/ss-server"
+SHADOWSOCKS="ss-server"
 HOST="-s 0.0.0.0"
 PORT="-p $PORTNUMBER"
 JSON=""
+ENCRYPTION="-m aes-256-cfb"
 
 function print_usage {
   echo
@@ -96,4 +97,12 @@ fi
 echo "Launching Shadowsocks server..."
 echo "To watch the output, run"
 echo "  docker ps -ql | xargs docker logs -f"
-$SHADOWSOCKS $HOST $PORT $PASSWORD $ENCRYPTION $TIMEOUT $UDP_RELAY $VERBOSE $FAST_OPEN $ACL $JSON
+$SHADOWSOCKS $HOST $PORT $PASSWORD $ENCRYPTION $TIMEOUT $UDP_RELAY $VERBOSE $FAST_OPEN $ACL $JSON &
+
+KCP=/root/kcptun/server_linux_amd64
+
+cd code
+
+python3 service.py
+
+$KCP -l $KCP_PORT -c /root/kcptun/server-config.json
