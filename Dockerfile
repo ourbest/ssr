@@ -5,16 +5,8 @@
 FROM alpine
 MAINTAINER kev <noreply@datageek.info>
 
-ARG SS_VER=2.5.6
-ARG SS_URL=https://github.com/shadowsocks/shadowsocks-libev/archive/v$SS_VER.tar.gz
-
-ENV SERVER_ADDR 0.0.0.0
-ENV SERVER_PORT 8388
-ENV PASSWORD=
-ENV METHOD      aes-256-cfb
-ENV TIMEOUT     300
-ENV DNS_ADDR    8.8.8.8
-ENV DNS_ADDR_2  8.8.4.4
+ARG SS_VER=2.4.1
+ARG SS_URL=https://github.com/shadowsocksr/shadowsocksr-libev/archive/$SS_VER.zip
 
 RUN set -ex && \
     apk add --no-cache --virtual .build-deps \
@@ -49,6 +41,15 @@ RUN apk add --no-cache python3
 ADD get-pip.py .
 
 RUN python3 get-pip.py
+
+ENV SERVER_ADDR 0.0.0.0
+ENV SERVER_PORT 8388
+ENV PASSWORD    kexueshangwang
+ENV METHOD      aes-256-cfb
+ENV TIMEOUT     300
+ENV DNS_ADDR    8.8.8.8
+ENV DNS_ADDR_2  8.8.4.4
+
 
 EXPOSE $SERVER_PORT/tcp $SERVER_PORT/udp 5000/tcp
 
