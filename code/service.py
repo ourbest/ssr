@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 API_KEY = os.environ.get('ARUKAS_API_KEY')
 API_SECRET = os.environ.get('ARUKAS_API_SECRET')
+PASSWORD = os.environ.get('PASSWORD')
 
 
 @app.route('/')
@@ -28,16 +29,16 @@ def server():
     }
     for container in val['data']:
         attrs = container['attributes']
-        if attrs['image_name'].find('ourbest/ss-kcp') == 0:
+        if attrs['image_name'].find('ourbest/ssr-kcp') == 0:
             for port in attrs['port_mappings'][0]:
                 server = port['host']
                 server = server[server.find('-') + 1:server.find('.')].replace('-', '.')
                 p = port['service_port']
-                if port['container_port'] == 8989:
+                if port['container_port'] == 8388:
                     configures['ss'] = {
                         "server": server,
                         "server_port": p,
-                        "password": "kexueshangwang",
+                        "password": PASSWORD,
                         "method": "aes-256-cfb"
                     }
                     configures['ss_str'] = json.dumps(configures['ss'])
