@@ -103,6 +103,6 @@ KCP=/root/kcptun/server_linux_amd64
 
 cd code
 
-python3 service.py
+python3 service.py &
 
 $KCP -l $KCP_PORT --target 127.0.0.1:$SERVER_PORT -c /root/kcptun/server-config.json
