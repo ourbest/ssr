@@ -71,4 +71,4 @@ RUN pip3 install flask requests
 
 ADD entrypoint .
 
-ENTRYPOINT ["sh", "entrypoint", "-k", ${PASSWORD}, "-v"]
+ENTRYPOINT ["sh", "entrypoint", "-v"]
