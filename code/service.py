@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 API_KEY = os.environ.get('ARUKAS_API_KEY')
 API_SECRET = os.environ.get('ARUKAS_API_SECRET')
-PASSWORD = os.environ.get('PASSWORD')
+PASSWORD = os.environ.get('SS_PASSWORD')
 
 
 @app.route('/')
