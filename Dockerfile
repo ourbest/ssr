@@ -61,8 +61,6 @@ WORKDIR /root
 
 ADD code /root/code
 
-ADD entrypoint .
-
 ENV KCP_PORT 6688
 
 RUN chmod +x /root/kcptun/server_linux_amd64
@@ -71,4 +69,6 @@ EXPOSE $KCP_PORT/udp
 
 RUN pip3 install flask requests
 
-ENTRYPOINT ["sh", "entrypoint", "-k", "${PASSWORD}", "-v"]
+ADD entrypoint .
+
+ENTRYPOINT ["sh", "entrypoint", "-k", ${PASSWORD}, "-v"]
