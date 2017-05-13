@@ -1,74 +1,30 @@
-#
-# Dockerfile for shadowsocks-libev
-#
+FROM ubuntu:16.04
 
-FROM alpine
-MAINTAINER kev <noreply@datageek.info>
+RUN apt-get update && apt-get install -y supervisor python-pip wget bash unzip
 
-ARG SS_VER=2.4.1
-ARG SS_URL=https://github.com/shadowsocksr/shadowsocksr-libev/archive/$SS_VER.tar.gz
+RUN pip install requests Flask
 
-RUN set -ex && \
-    apk add --no-cache --virtual .build-deps \
-                                asciidoc \
-                                autoconf \
-                                build-base \
-                                curl \
-                                libtool \
-                                linux-headers \
-                                openssl-dev \
-                                pcre-dev \
-                                tar \
-                                xmlto && \
-    cd /tmp && \
-    curl -sSL $SS_URL | tar xz --strip 1 && \
-    ./configure --prefix=/usr --disable-documentation && \
-    make install && \
-    cd .. && \
+WORKDIR /root/
+ADD shadowsocksR.sh /root/install-shadowsocks.sh
+RUN sh install-shadowsocks.sh
+#RUN wget --no-check-certificate -O shadowsocks-go.sh https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-go.sh && \
+#    chmod +x shadowsocks-go.sh && \
+#    ./shadowsocks-go.sh 2>&1 | tee shadowsocks-go.log
 
-    runDeps="$( \
-        scanelf --needed --nobanner /usr/bin/ss-* \
-            | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-            | xargs -r apk info --installed \
-            | sort -u \
-    )" && \
-    apk add --no-cache --virtual .run-deps $runDeps && \
-    apk del .build-deps && \
-    rm -rf /tmp/*
+RUN mkdir /root/kcptun
 
-RUN apk add --no-cache python3
+ADD /kcptun/ /root/kcptun/
 
-ADD get-pip.py .
+EXPOSE 8989
+EXPOSE 6688/udp
+EXPOSE 5000
 
-RUN python3 get-pip.py
+ENV SS_PASSWORD kexueshangwang
 
-ENV SERVER_ADDR 0.0.0.0
-ENV SERVER_PORT 8388
-ENV PASSWORD    kexueshangwang
-ENV METHOD      aes-256-cfb
-ENV TIMEOUT     300
-ENV DNS_ADDR    8.8.8.8
-ENV DNS_ADDR_2  8.8.4.4
-
-
-EXPOSE $SERVER_PORT/tcp $SERVER_PORT/udp 5000/tcp
-
-RUN mkdir -p /root
-
-ADD kcptun /root/kcptun
-
-WORKDIR /root
+ADD ss.conf /etc/supervisor/conf.d/ss.conf
+ADD kcp.conf /etc/supervisor/conf.d/kcp.conf
+ADD flask.conf /etc/supervisor/conf.d/flask.conf
 
 ADD code /root/code
 
-ENV KCP_PORT 6688
-
-RUN chmod +x /root/kcptun/server_linux_amd64
-
-EXPOSE $KCP_PORT/udp
-
-RUN pip3 install flask requests
-
-ADD entrypoint .
-
-ENTRYPOINT ["sh", "entrypoint", "-v"]
+CMD supervisord -n
