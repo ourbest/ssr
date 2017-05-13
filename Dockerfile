@@ -71,4 +71,4 @@ EXPOSE $KCP_PORT/udp
 
 RUN pip3 install flask requests
 
-ENTRYPOINT ["sh", "entrypoint", "-k", "${PASSWORD}"]
+ENTRYPOINT ["sh", "entrypoint", "-k", "${PASSWORD}", "-v"]

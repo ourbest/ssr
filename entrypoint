@@ -1,11 +1,10 @@
 #! /bin/bash
 
 IMAGE_NAME="ourbest/ssr-kcp"
-PORTNUMBER="8338"
 
 SHADOWSOCKS="ss-server"
 HOST="-s 0.0.0.0"
-PORT="-p $PORTNUMBER"
+PORT="-p $SERVER_PORT"
 JSON=""
 ENCRYPTION="-m aes-256-cfb"
 
@@ -97,6 +96,7 @@ fi
 echo "Launching Shadowsocks server..."
 echo "To watch the output, run"
 echo "  docker ps -ql | xargs docker logs -f"
+echo $SHADOWSOCKS $HOST $PORT $PASSWORD $ENCRYPTION $TIMEOUT $UDP_RELAY $VERBOSE $FAST_OPEN $ACL $JSON
 $SHADOWSOCKS $HOST $PORT $PASSWORD $ENCRYPTION $TIMEOUT $UDP_RELAY $VERBOSE $FAST_OPEN $ACL $JSON &
 
 KCP=/root/kcptun/server_linux_amd64
