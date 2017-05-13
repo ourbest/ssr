@@ -105,4 +105,4 @@ cd code
 
 python3 service.py
 
-$KCP -l $KCP_PORT -c /root/kcptun/server-config.json
+$KCP -l $KCP_PORT --target 127.0.0.1:$SERVER_PORT -c /root/kcptun/server-config.json
