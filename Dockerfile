@@ -25,6 +25,11 @@ ADD ss.conf /etc/supervisor/conf.d/ss.conf
 ADD kcp.conf /etc/supervisor/conf.d/kcp.conf
 ADD flask.conf /etc/supervisor/conf.d/flask.conf
 
+
+ADD requirements.txt .
+
+RUN pip install -r requirements.txt
+
 ADD code /root/code
 
 CMD supervisord -n

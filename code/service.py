@@ -14,6 +14,13 @@ API_KEY = os.environ.get('ARUKAS_API_KEY')
 API_SECRET = os.environ.get('ARUKAS_API_SECRET')
 PASSWORD = os.environ.get('SS_PASSWORD')
 
+raven_dsn = os.environ.get('RAVEN_DSN')
+
+if raven_dsn:
+    from raven.contrib.flask import Sentry
+
+    sentry = Sentry(app, dsn=raven_dsn)
+
 
 @app.route('/')
 def server():
