@@ -1,8 +1,8 @@
 FROM ubuntu:16.04
 
-RUN apt-get update && apt-get install -y supervisor python-pip wget bash unzip openssh-server
+RUN apt-get update && apt-get install -y supervisor python3-pip wget bash unzip openssh-server
 
-RUN pip install requests Flask
+RUN pip3 install requests Flask
 
 ENV SS_PASSWORD kexueshangwang
 
@@ -30,7 +30,7 @@ RUN sh install-shadowsocks.sh
 
 ADD requirements.txt .
 
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 RUN mkdir /root/kcptun
 
