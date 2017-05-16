@@ -5,7 +5,7 @@ import json
 import os
 
 import requests
-from flask import Flask
+from flask import Flask, jsonify
 from flask import render_template
 
 app = Flask(__name__)
@@ -56,6 +56,11 @@ def server():
 
                     configures['kcp_str'] = json.dumps(configures['kcp'])
     return render_template('result.html', config=configures)
+
+
+@app.route('/ping')
+def ping():
+    return jsonify(result='ok')
 
 
 if __name__ == '__main__':
