@@ -43,7 +43,7 @@ def server():
                 server = port['host']
                 server = server[server.find('-') + 1:server.find('.')].replace('-', '.')
                 p = port['service_port']
-                if port['container_port'] == 8388:
+                if port['container_port'] == 8989:
                     configures['ss'] = {
                         "server": server,
                         "server_port": p,
