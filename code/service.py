@@ -33,10 +33,9 @@ def server():
     }
     resp = requests.get(url, headers=headers)
     val = resp.json()
-    configures = {
-
-    }
+    configures = list()
     for container in val['data']:
+        config = dict()
         attrs = container['attributes']
         if attrs['image_name'].find('ourbest/ssr-kcp') == 0:
             for port in attrs['port_mappings'][0]:
@@ -44,16 +43,16 @@ def server():
                 server = server[server.find('-') + 1:server.find('.')].replace('-', '.')
                 p = port['service_port']
                 if port['container_port'] == 8989:
-                    configures['ss'] = {
+                    config['ss'] = {
                         "server": server,
                         "server_port": p,
                         "password": PASSWORD,
                         "method": "aes-256-cfb"
                     }
-                    configures['ss_str'] = json.dumps(configures['ss'])
+                    config['ss_str'] = json.dumps(config['ss'])
 
                 elif port['container_port'] == 6688:
-                    configures['kcp'] = {
+                    config['kcp'] = {
                         "localaddr": ":22222",
                         "remoteaddr": "%s:%s" % (server, p),
                         "key": "chacha", "crypt": "xor",
@@ -61,8 +60,11 @@ def server():
                         "parityshard": 30, "dscp": 46
                     }
 
-                    configures['kcp_str'] = json.dumps(configures['kcp'])
-    return render_template('result.html', config=configures)
+                    config['kcp_str'] = json.dumps(config['kcp'])
+
+            configures.append(config)
+
+    return render_template('result.html', configures=configures)
 
 
 @app.route('/ping')
