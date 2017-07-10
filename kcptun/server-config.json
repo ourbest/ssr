@@ -1,6 +1,6 @@
 {
   "listen": ":6688",
-  "target": "127.0.0.1:8388",
+  "target": "127.0.0.1:8989",
   "key": "chacha",
   "crypt": "xor",
   "mode": "fast2",
